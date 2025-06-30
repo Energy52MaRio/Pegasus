@@ -11,8 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Chosen Palette: Warm Neutrals (Slate, Stone, Sky) -->
-    <!-- Application Structure Plan: A dashboard-style SPA with four main views: Übersicht, Unternehmensvergleich, Finanzanalyse, und Risiko-Matrix. This structure groups information by user task (e.g., financial deep-dive, risk assessment) rather than mimicking the report's linear flow, enabling intuitive, non-linear exploration for different user roles (finance, strategy). Navigation is handled by a main top bar. -->
-    <!-- Visualization & Content Choices: 1. Financials -> Goal: Compare/Change -> Viz: Interactive Bar Chart (Chart.js) -> Interaction: Toggle between Reported/Adjusted EBITDA to see impact directly. Justification: More dynamic and insightful than static tables. 2. Risks -> Goal: Organize/Inform -> Viz: Interactive quadrant layout (HTML/Grid) -> Interaction: Clickable cards to reveal details. Justification: Visualizes risk priority better than a simple list. 3. KPIs -> Goal: Inform -> Viz: Styled cards & simple bar indicators -> Interaction: Hover for definitions. Justification: Quickly scannable key metrics. -->
+    <!-- Application Structure Plan: A dashboard-style SPA with five main views: Übersicht, Unternehmensvergleich, Finanzanalyse, Risiko-Matrix, and a new 'Struktur & Aufgaben' section. This structure groups information by user task (e.g., financial deep-dive, risk assessment) rather than mimicking the report's linear flow, enabling intuitive, non-linear exploration for different user roles (finance, strategy). Navigation is handled by a main top bar. -->
+    <!-- Visualization & Content Choices: 1. Financials -> Goal: Compare/Change -> Viz: Interactive Bar Chart (Chart.js) -> Interaction: Toggle between Reported/Adjusted EBITDA to see impact directly. Justification: More dynamic and insightful than static tables. 2. Risks -> Goal: Organize/Inform -> Viz: Interactive quadrant layout (HTML/Grid) -> Interaction: Clickable cards to reveal details. Justification: Visualizes risk priority better than a simple list. 3. Team Tasks -> Goal: Organize -> Viz: Accordion Layout (HTML/JS) -> Interaction: Click to expand/collapse. Justification: Keeps the UI clean and allows users to focus on their specific tasks. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <style>
@@ -68,6 +68,12 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
+        .task-accordion-button .arrow {
+            transition: transform 0.3s ease;
+        }
+        .task-accordion-button.open .arrow {
+            transform: rotate(180deg);
+        }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -101,6 +107,7 @@
                 <button class="nav-button py-2 px-5 rounded-lg font-semibold" data-view="comparison">Unternehmensvergleich</button>
                 <button class="nav-button py-2 px-5 rounded-lg font-semibold" data-view="financials">Finanzanalyse</button>
                 <button class="nav-button py-2 px-5 rounded-lg font-semibold" data-view="risks">Risiko-Matrix</button>
+                <button class="nav-button py-2 px-5 rounded-lg font-semibold" data-view="tasks">Struktur & Aufgaben</button>
             </div>
         </nav>
 
@@ -112,19 +119,25 @@
                     <p class="max-w-3xl mx-auto text-slate-600">Dieses Dashboard bietet einen schnellen Überblick über die Eckdaten der Transaktion und die strategischen Ziele. Nutze die Navigation, um in die Details der einzelnen Analysebereiche einzutauchen.</p>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                     <div class="bg-white p-6 rounded-xl border shadow-sm text-center">
+                        <h3 class="text-slate-500 font-semibold text-lg">Projekt-Status</h3>
+                        <p class="text-2xl font-bold text-slate-800 mt-2">Phase II</p>
+                        <p class="text-sm text-slate-500">Due Diligence</p>
+                    </div>
                     <div class="bg-white p-6 rounded-xl border shadow-sm text-center">
                         <h3 class="text-slate-500 font-semibold text-lg">Indikatives Angebot</h3>
-                        <p class="text-4xl font-bold text-sky-800 mt-2">35 Mio. €</p>
+                        <p class="text-2xl font-bold text-sky-800 mt-2">35 Mio. €</p>
+                        <p class="text-sm text-slate-500">ca. 4x ARR Multiple</p>
                     </div>
                     <div class="bg-white p-6 rounded-xl border shadow-sm text-center">
                         <h3 class="text-slate-500 font-semibold text-lg">Target ARR</h3>
-                        <p class="text-4xl font-bold text-sky-800 mt-2">8,52 Mio. €</p>
-                        <p class="text-sm text-slate-500">entspr. ca. 4x ARR Multiple</p>
+                        <p class="text-2xl font-bold text-sky-800 mt-2">8,52 Mio. €</p>
+                        <p class="text-sm text-slate-500">Wachstum verlangsamt sich</p>
                     </div>
                     <div class="bg-white p-6 rounded-xl border shadow-sm text-center">
-                        <h3 class="text-slate-500 font-semibold text-lg">Acquirer Umsatz</h3>
-                        <p class="text-4xl font-bold text-slate-600 mt-2">450 Mio. €</p>
+                        <h3 class="text-slate-500 font-semibold text-lg">Zentrale Frage</h3>
+                        <p class="text-lg font-semibold text-slate-800 mt-3">Ist die technologische Chance das kulturelle und finanzielle Risiko wert?</p>
                     </div>
                 </div>
 
@@ -187,7 +200,7 @@
                         </div>
                          <div>
                             <h4 class="font-semibold mb-2">Kultur</h4>
-                            <p class="text-sm text-slate-700">Inhabergeführt, traditionell, prozessorientiert, hierarchisch. IT als unterstützende Kostenstelle.</p>
+                            <p class="text-sm text-slate-700">Inhabergeführt, traditionell, prozessorientiert, hierarchisch. IT als unterstützende Kostenstelle. Entscheidungswege sind lang.</p>
                         </div>
                     </div>
                     <!-- Target Column -->
@@ -206,8 +219,8 @@
                             <p class="text-sm text-sky-100">Asset-light B2B-SaaS-Anbieter mit KI-gestützter Software ("QuantumRoute") für die Routenplanung auf der "letzten Meile".</p>
                         </div>
                          <div>
-                            <h4 class="font-semibold mb-2">Management</h4>
-                            <p class="text-sm text-sky-100">Geführt vom Gründer-Duo: Technische Visionärin (Dr. Lena Vogel) und aggressiver Vertriebler (Markus Weber).</p>
+                            <h4 class="font-semibold mb-2">Management & Gründerdynamik</h4>
+                            <p class="text-sm text-sky-100">Geführt vom Gründer-Duo mit spürbarer Spannung: Die produktfokussierte CEO Dr. Vogel ("Wir brauchen mehr Zeit für den Algorithmus!") vs. den vertriebsgetriebenen CSO Herr Weber ("Wir müssen wachsen, egal was!").</p>
                         </div>
                          <div>
                             <h4 class="font-semibold mb-2">Kultur</h4>
@@ -254,7 +267,7 @@
                                 <div class="kpi-bar-bg w-full h-3">
                                     <div id="ltv-cac-bar" class="kpi-bar bg-sky-600" style="width: 52%;"></div>
                                 </div>
-                                <p class="text-xs text-slate-500 mt-1">Guter Wert: >3x. Aktueller Wert ist ein Warnsignal.</p>
+                                <p class="text-xs text-slate-500 mt-1">Guter Wert: >3x. Aktueller Wert ist ein Warnsignal für ineffizientes Marketing.</p>
                             </div>
                             <div class="kpi-item">
                                 <div class="flex justify-between items-baseline mb-1">
@@ -264,7 +277,7 @@
                                  <div class="kpi-bar-bg w-full h-3">
                                     <div id="churn-bar" class="kpi-bar bg-amber-500" style="width: 72%;"></div>
                                 </div>
-                                <p class="text-xs text-slate-500 mt-1">Gestiegen von 1,2% im Vorjahr. Gesunder Wert: <1%.</p>
+                                <p class="text-xs text-slate-500 mt-1">Gestiegen von 1,2% im Vorjahr, vor allem bei Kleinkunden. Gesunder Wert: <1%.</p>
                             </div>
                          </div>
                     </div>
@@ -314,15 +327,19 @@
                     <!-- Quadrant Grid -->
                     <div class="grid grid-cols-2 grid-rows-2 gap-6 p-4 bg-white rounded-xl border shadow-sm">
                         <!-- Top-Left: High Likelihood, Low Impact -->
-                        <div class="border-dashed border-2 border-slate-200 rounded-lg p-4 flex flex-col justify-center items-center">
+                        <div class="border-dashed border-2 border-slate-200 rounded-lg p-4 flex flex-col justify-center items-center space-y-4">
                              <div class="risk-card bg-amber-100 border border-amber-300 p-4 rounded-lg w-full" data-risk="support">
                                 <h4 class="font-bold text-amber-800">Langsamer Support</h4>
                                 <p class="text-xs text-amber-700 mt-1">Könnte Churn bei Kleinkunden erhöhen</p>
                             </div>
+                            <div class="risk-card bg-amber-100 border border-amber-300 p-4 rounded-lg w-full" data-risk="ui">
+                                <h4 class="font-bold text-amber-800">Unintuitive UI</h4>
+                                <p class="text-xs text-amber-700 mt-1">Beeinträchtigt die Nutzerakzeptanz</p>
+                            </div>
                         </div>
                         <!-- Top-Right: High Likelihood, High Impact -->
-                        <div class="border-dashed border-2 border-slate-200 rounded-lg p-4 flex flex-col justify-center items-center">
-                            <div class="risk-card bg-rose-100 border border-rose-300 p-4 rounded-lg w-full mb-4" data-risk="churn">
+                        <div class="border-dashed border-2 border-slate-200 rounded-lg p-4 flex flex-col justify-center items-center space-y-4">
+                            <div class="risk-card bg-rose-100 border border-rose-300 p-4 rounded-lg w-full" data-risk="churn">
                                 <h4 class="font-bold text-rose-800">Steigender Churn</h4>
                                 <p class="text-xs text-rose-700 mt-1">Erosion der Kundenbasis</p>
                             </div>
@@ -333,14 +350,11 @@
                         </div>
                         <!-- Bottom-Left: Low Likelihood, Low Impact -->
                          <div class="border-dashed border-2 border-slate-200 rounded-lg p-4 flex flex-col justify-center items-center">
-                             <div class="risk-card bg-green-100 border border-green-300 p-4 rounded-lg w-full" data-risk="ui">
-                                <h4 class="font-bold text-green-800">Unintuitive UI</h4>
-                                <p class="text-xs text-green-700 mt-1">Beeinträchtigt die Nutzerakzeptanz</p>
-                            </div>
+                              <p class="text-slate-400 text-sm">Keine Risiken in dieser Kategorie identifiziert.</p>
                         </div>
                         <!-- Bottom-Right: Low Likelihood, High Impact -->
-                         <div class="border-dashed border-2 border-slate-200 rounded-lg p-4 flex flex-col justify-center items-center">
-                           <div class="risk-card bg-rose-100 border border-rose-300 p-4 rounded-lg w-full mb-4" data-risk="concentration">
+                         <div class="border-dashed border-2 border-slate-200 rounded-lg p-4 flex flex-col justify-center items-center space-y-4">
+                           <div class="risk-card bg-rose-100 border border-rose-300 p-4 rounded-lg w-full" data-risk="concentration">
                                 <h4 class="font-bold text-rose-800">Kundenkonzentration</h4>
                                 <p class="text-xs text-rose-700 mt-1">Verlust von "Blitz-Express" wäre kritisch</p>
                             </div>
@@ -354,6 +368,38 @@
                 <!-- Risk Details Pane -->
                 <div id="risk-details-pane" class="mt-8 bg-white p-6 rounded-xl border shadow-sm min-h-[10rem] flex items-center justify-center">
                      <p class="text-slate-500">Klicke auf ein Risiko, um hier Details zu sehen.</p>
+                </div>
+            </section>
+
+            <!-- Tasks View -->
+            <section id="tasks" class="view">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-2">Transaktionsstruktur & Aufgaben</h2>
+                    <p class="max-w-3xl mx-auto text-slate-600">Hier sind die Details zur vorgeschlagenen Deal-Struktur und die spezifischen Arbeitsaufträge für eure Teams. Nutzt diese als Ausgangspunkt für eure Analysen und die Erstellung der Prompts.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="card p-6 bg-white">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Vorgeschlagene Transaktionsstruktur</h3>
+                        <ul class="space-y-4">
+                            <li><strong class="text-slate-700">Gesamtangebot:</strong> 35 Mio. €</li>
+                            <li><strong class="text-slate-700">Zahlung bei Abschluss:</strong> 25 Mio. €</li>
+                            <li><strong class="text-slate-700">Verkäuferdarlehen:</strong> 5 Mio. €, rückzahlbar über 3 Jahre.</li>
+                            <li class="bg-amber-50 border-l-4 border-amber-400 p-3 rounded-r-lg">
+                                <strong class="text-amber-800">Konfliktpunkt Earn-Out (5 Mio. €):</strong>
+                                <ul class="list-disc list-inside mt-2 text-sm text-slate-700">
+                                    <li><strong class="font-semibold">Vorschlag ML AG (Käufer):</strong> 50% gekoppelt an ARR-Wachstum, 50% an das Erreichen eines positiven EBITDA.</li>
+                                    <li><strong class="font-semibold">Vorschlag FLG (Verkäufer):</strong> 100% gekoppelt an ARR-Wachstum.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card p-6 bg-white">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Aufgaben für die Workshop-Teams</h3>
+                        <div id="task-accordion" class="space-y-2">
+                           
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
@@ -406,7 +452,29 @@
                         details: "Das Unternehmen ist stark von den Gründern abhängig. Dr. Vogel besitzt das alleinige tiefe Wissen über den Kernalgorithmus und Herr Weber pflegt alle wichtigen Kundenbeziehungen. Ein Ausscheiden einer dieser Personen stellt ein erhebliches Risiko dar.",
                         quote: `"Dr. Vogel ist die einzige Person mit tiefem Verständnis für den Kernalgorithmus."`
                     }
-                }
+                },
+                 teamTasks: [
+                    { team: "FPM (Finance)", color: "teal", tasks: [
+                        "Erstellt eine Liste von kritischen Fragen für die Financial Due Diligence, die sich aus den KPIs (Churn, CAC) und den Bilanzpositionen ergeben.",
+                        "Lasst die KI ein Szenario modellieren: Wie würde sich das EBITDA 2025 entwickeln, wenn der Kunde 'Blitz-Express' (20% des Umsatzes) nicht verlängert und die Marketingkosten weiter steigen?",
+                        "Formuliert einen Prompt, der eine SWOT-Analyse aus rein finanzieller Sicht erstellt."
+                    ]},
+                    { team: "Strategie", color: "sky", tasks: [
+                        "Entwickelt ein Konzept für einen Post-Merger-Integrations-Workshop. Lasst die KI als systemischen Berater agieren und die drei größten kulturellen Konfliktpotenziale zwischen der ML AG (traditionell) und FLG (agil) identifizieren.",
+                        "Lasst die KI eine Konkurrenzanalyse zum Wettbewerber 'RouteGenius' erstellen und strategische Handlungsempfehlungen für die ML AG formulieren.",
+                        "Formuliert einen Prompt, der die Argumente für und gegen die vorgeschlagenen Earn-Out-Strukturen aus strategischer Sicht bewertet."
+                    ]},
+                    { team: "M&A", color: "rose", tasks: [
+                        "Erstellt eine detaillierte Checkliste für die Commercial & Technical Due Diligence. Welche Fragen müssen zur Technologie (technische Schuld!), zum Team (Gründer-Abhängigkeit!) und zum Markt gestellt werden?",
+                        "Lasst die KI die Argumente für eine Kaufpreisanpassung (Reduzierung) basierend auf den identifizierten Risiken (Kundenkonzentration, steigender Churn, technische Schuld) formulieren.",
+                        "Formuliert einen 'Master-Prompt', der die Ergebnisse der anderen Teams zusammenfasst und eine finale Management-Präsentation (Gliederung) mit einer klaren GO/NO-GO-Empfehlung erstellt."
+                    ]},
+                    { team: "Backoffice", color: "purple", tasks: [
+                        "Erstellt eine detaillierte Agenda für das interne Kick-off-Meeting (Projekt 'Pegasus').",
+                        "Formuliert eine E-Mail an das Management-Team der FLG, um den Due-Diligence-Prozess anzukündigen und die ersten Anforderungslisten zu übermitteln. Der Ton soll partnerschaftlich und professionell sein.",
+                        "Lasst die KI einen Projektplan (als Markdown-Tabelle) für die ersten 30 Tage nach der potenziellen Übernahme erstellen, der die wichtigsten administrativen Integrationsschritte abbildet."
+                    ]}
+                ]
             };
 
             // --- NAVIGATION ---
@@ -421,11 +489,7 @@
                     button.classList.add('active');
 
                     views.forEach(view => {
-                        if (view.id === targetView) {
-                            view.classList.add('active');
-                        } else {
-                            view.classList.remove('active');
-                        }
+                        view.classList.toggle('active', view.id === targetView);
                     });
                 });
             });
@@ -495,7 +559,6 @@
                 });
             }
             
-            // EBITDA Toggle Logic
             const toggleReported = document.getElementById('toggleReported');
             const toggleAdjusted = document.getElementById('toggleAdjusted');
             
@@ -511,7 +574,6 @@
                 toggleReported.classList.remove('bg-white', 'shadow');
             });
             
-            // KPI Bar animations
             function animateKpiBars() {
                 const ltvBar = document.getElementById('ltv-cac-bar');
                 const churnBar = document.getElementById('churn-bar');
@@ -520,8 +582,6 @@
                 if (churnBar) churnBar.style.width = (caseData.kpis.churn_rate / 2.5) * 100 + '%'; // Scale out of 2.5
             }
 
-
-            // --- RISK MATRIX ---
             const riskCards = document.querySelectorAll('.risk-card');
             const riskDetailsPane = document.getElementById('risk-details-pane');
 
@@ -543,7 +603,33 @@
                     }
                 });
             });
-
+            
+            const taskAccordion = document.getElementById('task-accordion');
+            if (taskAccordion) {
+                caseData.teamTasks.forEach(item => {
+                    const taskHtml = `
+                        <div class="bg-slate-50 rounded-lg">
+                            <button class="task-accordion-button w-full text-left p-4 flex justify-between items-center font-semibold text-slate-700 hover:bg-slate-100 rounded-lg">
+                                <span>Team ${item.team}</span>
+                                <span class="arrow transform transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="px-4 pb-4 hidden">
+                                <ul class="list-disc list-inside space-y-2 text-sm text-slate-600">
+                                    ${item.tasks.map(task => `<li>${task}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    taskAccordion.innerHTML += taskHtml;
+                });
+                taskAccordion.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const content = button.nextElementSibling;
+                        content.classList.toggle('hidden');
+                        button.classList.toggle('open');
+                    });
+                });
+            }
 
             // --- INITIALIZATION ---
             createFinancialsChart();
