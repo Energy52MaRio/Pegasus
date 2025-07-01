@@ -275,6 +275,14 @@
                         </div>
                     </div>
 
+                     <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm mb-8">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Analyse der Kostenstruktur (in T€)</h3>
+                        <p class="text-sm text-slate-600 mb-6">Dieses gestapelte Balkendiagramm zeigt die Entwicklung der drei Hauptkostenblöcke. Es wird deutlich, wie stark die Vertriebs- und Marketingkosten im Verhältnis zu den anderen Bereichen gestiegen sind, um das Wachstum zu finanzieren.</p>
+                        <div class="chart-container max-w-4xl mx-auto">
+                            <canvas id="costStructureChart"></canvas>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm">
                             <h3 class="text-2xl font-bold text-slate-800 mb-4">SaaS-Kennzahlen (KPIs)</h3>
@@ -443,6 +451,7 @@
                 if (passwordInput.value === correctPassword) {
                     passwordOverlay.style.display = 'none';
                     appContainer.classList.remove('hidden');
+                    initializeCharts();
                 } else {
                     errorMessage.textContent = 'Falsches Passwort. Bitte erneut versuchen.';
                     passwordInput.value = '';
@@ -458,7 +467,12 @@
                     revenue: [2100, 4800, 8500],
                     grossProfit: [1650, 3900, 6900],
                     reportedEbitda: [-700, -600, -1200],
-                    adjustedEbitda: [-700, -600, -600]
+                    adjustedEbitda: [-700, -600, -600],
+                    costs: {
+                        research: [1100, 2000, 3400],
+                        sales: [950, 1950, 3800],
+                        admin: [300, 550, 900]
+                    }
                 },
                 kpis: {
                     ltv_cac_ratio: 2.6,
@@ -538,14 +552,11 @@
             });
 
             // --- CHARTS & VISUALIZATIONS ---
-            let financialsChart;
+            let financialsChart, costStructureChart;
 
             function createFinancialsChart(ebitdaType = 'reported') {
                 const ctx = document.getElementById('financialsChart').getContext('2d');
-                if (financialsChart) {
-                    financialsChart.destroy();
-                }
-
+                if (financialsChart) financialsChart.destroy();
                 const ebitdaData = ebitdaType === 'reported' ? caseData.financials.reportedEbitda : caseData.financials.adjustedEbitda;
                 const ebitdaLabel = ebitdaType === 'reported' ? 'EBITDA (Reported)' : 'EBITDA (Adjusted)';
 
@@ -554,50 +565,32 @@
                     data: {
                         labels: caseData.financials.years,
                         datasets: [
-                            {
-                                label: 'Umsatz',
-                                data: caseData.financials.revenue,
-                                backgroundColor: '#0ea5e9', // sky-500
-                                order: 1
-                            },
-                            {
-                                label: 'Rohertrag',
-                                data: caseData.financials.grossProfit,
-                                backgroundColor: '#64748b', // slate-500
-                                order: 2
-                            },
-                             {
-                                label: ebitdaLabel,
-                                data: ebitdaData,
-                                backgroundColor: '#f59e0b', // amber-500
-                                order: 3
-                            }
+                            { label: 'Umsatz', data: caseData.financials.revenue, backgroundColor: '#0ea5e9', order: 1 },
+                            { label: 'Rohertrag', data: caseData.financials.grossProfit, backgroundColor: '#64748b', order: 2 },
+                            { label: ebitdaLabel, data: ebitdaData, backgroundColor: '#f59e0b', order: 3 }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { beginAtZero: false, title: { display: true, text: 'in T€' } } }, plugins: { tooltip: { mode: 'index', intersect: false }, legend: { position: 'bottom' } } }
+                });
+            }
+
+            function createCostStructureChart() {
+                const ctx = document.getElementById('costStructureChart').getContext('2d');
+                if (costStructureChart) costStructureChart.destroy();
+                costStructureChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: caseData.financials.years,
+                        datasets: [
+                            { label: 'Forschung & Entwicklung', data: caseData.financials.costs.research, backgroundColor: '#3b82f6' },
+                            { label: 'Vertrieb & Marketing', data: caseData.financials.costs.sales, backgroundColor: '#f97316' },
+                            { label: 'Verwaltung', data: caseData.financials.costs.admin, backgroundColor: '#a855f7' }
                         ]
                     },
                     options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                grid: { display: false }
-                            },
-                            y: {
-                                beginAtZero: false,
-                                title: {
-                                    display: true,
-                                    text: 'in T€'
-                                }
-                            }
-                        },
-                        plugins: {
-                            tooltip: {
-                                mode: 'index',
-                                intersect: false,
-                            },
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
+                        responsive: true, maintainAspectRatio: false,
+                        scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, title: { display: true, text: 'in T€' } } },
+                        plugins: { tooltip: { mode: 'index' }, legend: { position: 'bottom' } }
                     }
                 });
             }
@@ -620,9 +613,8 @@
             function animateKpiBars() {
                 const ltvBar = document.getElementById('ltv-cac-bar');
                 const churnBar = document.getElementById('churn-bar');
-
-                if (ltvBar) ltvBar.style.width = (caseData.kpis.ltv_cac_ratio / 5) * 100 + '%'; // Scale out of 5
-                if (churnBar) churnBar.style.width = (caseData.kpis.churn_rate / 2.5) * 100 + '%'; // Scale out of 2.5
+                if (ltvBar) ltvBar.style.width = (caseData.kpis.ltv_cac_ratio / 5) * 100 + '%';
+                if (churnBar) churnBar.style.width = (caseData.kpis.churn_rate / 2.5) * 100 + '%';
             }
 
             const riskCards = document.querySelectorAll('.risk-card');
@@ -632,7 +624,6 @@
                 card.addEventListener('click', () => {
                     const riskKey = card.dataset.risk;
                     const riskData = caseData.risks[riskKey];
-
                     if (riskData) {
                         riskDetailsPane.innerHTML = `
                             <div class="text-left w-full">
@@ -675,8 +666,11 @@
             }
 
             // --- INITIALIZATION ---
-            createFinancialsChart();
-            animateKpiBars();
+            function initializeCharts() {
+                createFinancialsChart();
+                createCostStructureChart();
+                animateKpiBars();
+            }
         });
     </script>
 </body>
