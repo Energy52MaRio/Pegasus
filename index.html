@@ -11,8 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Chosen Palette: Warm Neutrals (Slate, Stone, Sky) -->
-    <!-- Application Structure Plan: A dashboard-style SPA with five main views: Übersicht, Unternehmensvergleich, Finanzanalyse, Risiko-Matrix, and a new 'Struktur & Aufgaben' section. This structure groups information by user task (e.g., financial deep-dive, risk assessment) rather than mimicking the report's linear flow, enabling intuitive, non-linear exploration for different user roles (finance, strategy). Navigation is handled by a main top bar. -->
-    <!-- Visualization & Content Choices: 1. Financials -> Goal: Compare/Change -> Viz: Interactive Bar Chart (Chart.js) -> Interaction: Toggle between Reported/Adjusted EBITDA to see impact directly. Justification: More dynamic and insightful than static tables. 2. Risks -> Goal: Organize/Inform -> Viz: Interactive quadrant layout (HTML/Grid) -> Interaction: Clickable cards to reveal details. Justification: Visualizes risk priority better than a simple list. 3. Team Tasks -> Goal: Organize -> Viz: Accordion Layout (HTML/JS) -> Interaction: Click to expand/collapse. Justification: Keeps the UI clean and allows users to focus on their specific tasks. -->
+    <!-- Application Structure Plan: A dashboard-style SPA with six main views: Übersicht, Unternehmensvergleich, Finanzanalyse, Risiko-Matrix, Synergie-Analyse, and 'Struktur & Aufgaben'. This structure groups information by user task (e.g., financial deep-dive, risk assessment, synergy modeling) rather than mimicking the report's linear flow, enabling intuitive, non-linear exploration for different user roles. Navigation is handled by a main top bar. -->
+    <!-- Visualization & Content Choices: 1. Financials -> Goal: Compare/Change -> Viz: Interactive Bar Chart (Chart.js) -> Interaction: Toggle between Reported/Adjusted EBITDA. Justification: Dynamic and insightful. 2. Risks -> Goal: Organize/Inform -> Viz: Interactive quadrant layout (HTML/Grid) -> Interaction: Clickable cards. Justification: Visualizes risk priority. 3. Synergies -> Goal: Explore/Quantify -> Viz: Interactive Sliders + Waterfall Chart (Chart.js) -> Interaction: Sliders update chart in real-time. Justification: Makes abstract synergy concepts tangible and shows their impact. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <style>
@@ -86,6 +86,22 @@
         .shake-error {
             animation: shake 0.3s ease-in-out;
         }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #0c4a6e;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        input[type=range]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #0c4a6e;
+            cursor: pointer;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body class="text-slate-800">
@@ -127,6 +143,7 @@
                     <button class="nav-button active py-2 px-5 rounded-lg font-semibold" data-view="dashboard">Übersicht</button>
                     <button class="nav-button py-2 px-5 rounded-lg font-semibold" data-view="comparison">Unternehmensvergleich</button>
                     <button class="nav-button py-2 px-5 rounded-lg font-semibold" data-view="financials">Finanzanalyse</button>
+                    <button class="nav-button py-2 px-5 rounded-lg font-semibold" data-view="synergies">Synergie-Analyse</button>
                     <button class="nav-button py-2 px-5 rounded-lg font-semibold" data-view="risks">Risiko-Matrix</button>
                     <button class="nav-button py-2 px-5 rounded-lg font-semibold" data-view="tasks">Struktur & Aufgaben</button>
                 </div>
@@ -336,6 +353,47 @@
 
                 </section>
 
+                <!-- Synergies View -->
+                <section id="synergies" class="view">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold mb-2">Interaktiver Synergie-Rechner</h2>
+                        <p class="max-w-3xl mx-auto text-slate-600">Eine der wichtigsten Fragen bei einer Übernahme ist: "Wo entsteht der eigentliche Wert?" Nutze die Schieberegler, um potenzielle Kosten- und Umsatzsynergien zu modellieren und ihre Auswirkung auf das kombinierte EBITDA zu visualisieren.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                        <div class="lg:col-span-2 bg-white p-6 rounded-xl border shadow-sm">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-6">Synergie-Annahmen</h3>
+                            <div class="space-y-8">
+                                <!-- Cost Synergies -->
+                                <div>
+                                    <label for="costSynergySlider" class="font-semibold text-slate-700">Kostensynergien</label>
+                                    <p class="text-sm text-slate-500 mb-2">Einsparungen im Backoffice (Verwaltung) durch Zusammenlegung von Funktionen.</p>
+                                    <div class="flex items-center gap-4">
+                                        <input id="costSynergySlider" type="range" min="0" max="50" value="15" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                                        <span id="costSynergyValue" class="font-bold text-sky-800 text-lg w-16 text-right">15%</span>
+                                    </div>
+                                </div>
+                                <!-- Revenue Synergies -->
+                                <div>
+                                    <label for="revenueSynergySlider" class="font-semibold text-slate-700">Umsatzsynergien</label>
+                                    <p class="text-sm text-slate-500 mb-2">Cross-Selling von "QuantumRoute" an die Bestandskunden der ML AG.</p>
+                                    <div class="flex items-center gap-4">
+                                        <input id="revenueSynergySlider" type="range" min="0" max="20" value="5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                                        <span id="revenueSynergyValue" class="font-bold text-sky-800 text-lg w-16 text-right">5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-3 bg-white p-6 rounded-xl border shadow-sm">
+                             <h3 class="text-2xl font-bold text-slate-800 mb-4">Auswirkung auf kombiniertes EBITDA</h3>
+                             <p class="text-sm text-slate-600 mb-6">Das Wasserfall-Diagramm zeigt, wie sich die geschätzten Synergien auf das kombinierte EBITDA der neuen, gemeinsamen Firma auswirken.</p>
+                            <div class="chart-container">
+                                <canvas id="synergyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Risks View -->
                 <section id="risks" class="view">
                     <div class="text-center mb-12">
@@ -474,6 +532,14 @@
                         admin: [300, 550, 900]
                     }
                 },
+                synergyData: {
+                    ml_ag_ebitda: 38000,
+                    flg_adjusted_ebitda: -600,
+                    flg_admin_costs: 900,
+                    ml_ag_customers: 5000,
+                    flg_arpa: 71, // 8.52M ARR / 120 customers / 12 months -> ~5.9k/month, let's use 71k ARPA
+                    flg_gross_margin: 0.81
+                },
                 kpis: {
                     ltv_cac_ratio: 2.6,
                     churn_rate: 1.8,
@@ -552,7 +618,7 @@
             });
 
             // --- CHARTS & VISUALIZATIONS ---
-            let financialsChart, costStructureChart;
+            let financialsChart, costStructureChart, synergyChart;
 
             function createFinancialsChart(ebitdaType = 'reported') {
                 const ctx = document.getElementById('financialsChart').getContext('2d');
@@ -591,6 +657,31 @@
                         responsive: true, maintainAspectRatio: false,
                         scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, title: { display: true, text: 'in T€' } } },
                         plugins: { tooltip: { mode: 'index' }, legend: { position: 'bottom' } }
+                    }
+                });
+            }
+
+            function createSynergyChart(baseEbitda, costSynergy, revenueSynergy) {
+                const ctx = document.getElementById('synergyChart').getContext('2d');
+                if (synergyChart) synergyChart.destroy();
+                
+                const finalEbitda = baseEbitda + costSynergy + revenueSynergy;
+
+                synergyChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Kombiniertes EBITDA'],
+                        datasets: [
+                            { label: 'Basis EBITDA (kombiniert)', data: [baseEbitda], backgroundColor: '#64748b' },
+                            { label: 'Kostensynergien', data: [costSynergy], backgroundColor: '#22c55e' },
+                            { label: 'Umsatzsynergien (Deckungsbeitrag)', data: [revenueSynergy], backgroundColor: '#3b82f6' },
+                            { label: 'EBITDA nach Synergien', data: [finalEbitda], backgroundColor: '#0c4a6e' }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: { y: { title: { display: true, text: 'in T€' } } },
+                        plugins: { legend: { position: 'bottom' } }
                     }
                 });
             }
@@ -665,10 +756,36 @@
                 });
             }
 
+            // --- SYNERGY CALCULATOR LOGIC ---
+            const costSynergySlider = document.getElementById('costSynergySlider');
+            const costSynergyValue = document.getElementById('costSynergyValue');
+            const revenueSynergySlider = document.getElementById('revenueSynergySlider');
+            const revenueSynergyValue = document.getElementById('revenueSynergyValue');
+
+            function calculateAndDisplaySynergies() {
+                const costPercentage = parseInt(costSynergySlider.value);
+                const revenuePercentage = parseInt(revenueSynergySlider.value);
+
+                costSynergyValue.textContent = `${costPercentage}%`;
+                revenueSynergyValue.textContent = `${revenuePercentage}%`;
+
+                const baseCombinedEbitda = caseData.synergyData.ml_ag_ebitda + caseData.synergyData.flg_adjusted_ebitda;
+                const costSynergy = caseData.synergyData.flg_admin_costs * (costPercentage / 100);
+                const additionalCustomers = caseData.synergyData.ml_ag_customers * (revenuePercentage / 100);
+                const additionalRevenue = additionalCustomers * caseData.synergyData.flg_arpa;
+                const revenueSynergyContribution = additionalRevenue * caseData.synergyData.flg_gross_margin;
+                
+                createSynergyChart(baseCombinedEbitda, costSynergy, revenueSynergyContribution);
+            }
+
+            costSynergySlider.addEventListener('input', calculateAndDisplaySynergies);
+            revenueSynergySlider.addEventListener('input', calculateAndDisplaySynergies);
+
             // --- INITIALIZATION ---
             function initializeCharts() {
                 createFinancialsChart();
                 createCostStructureChart();
+                calculateAndDisplaySynergies();
                 animateKpiBars();
             }
         });
