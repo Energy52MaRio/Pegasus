@@ -292,6 +292,60 @@
                         </div>
                     </div>
                     
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-4">SaaS-Kennzahlen (KPIs)</h3>
+                            <p class="text-sm text-slate-600 mb-6">Die folgenden KPIs sind entscheidend für die Bewertung eines SaaS-Unternehmens. Besondere Aufmerksamkeit gilt dem Verhältnis von Kunden-Lebenszeitwert (LTV) zu Akquisekosten (CAC) und der steigenden Abwanderungsrate (Churn).</p>
+                            <div class="space-y-6">
+                                <div>
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <span class="font-semibold text-slate-700">LTV / CAC Ratio</span>
+                                        <span class="text-2xl font-bold text-sky-800">2,6x</span>
+                                    </div>
+                                    <div class="kpi-bar-bg w-full h-3 bg-slate-200 rounded-full">
+                                        <div class="kpi-bar h-full bg-sky-600 rounded-full" style="width: 86.6%;"></div>
+                                    </div>
+                                    <p class="text-xs text-slate-500 mt-1">Guter Wert: >3x. Aktueller Wert ist ein Warnsignal.</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <span class="font-semibold text-slate-700">Monthly Churn Rate</span>
+                                        <span class="text-2xl font-bold text-amber-600">1,8%</span>
+                                    </div>
+                                    <div class="kpi-bar-bg w-full h-3 bg-slate-200 rounded-full">
+                                        <div class="kpi-bar h-full bg-amber-500 rounded-full" style="width: 90%;"></div>
+                                    </div>
+                                    <p class="text-xs text-slate-500 mt-1">Gestiegen von 1,2% im Vorjahr. Gesunder Wert: &lt;1%.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-4">Management Adjustments</h3>
+                            <p class="text-sm text-slate-600 mb-6">Um ein normalisiertes Ergebnis zu erhalten, wurden einmalige oder nicht-operative Posten aus dem Reported EBITDA herausgerechnet. Diese Anpassungen sind typisch für M&A-Prozesse.</p>
+                            <div class="space-y-3 text-slate-700">
+                                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                                    <span>1. Einmalige Messekosten</span>
+                                    <span class="font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full">+250 T€</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                                    <span>2. Überhöhtes Gründergehalt</span>
+                                    <span class="font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full">+150 T€</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                                    <span>3. Transaktions-Beratungskosten</span>
+                                    <span class="font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full">+200 T€</span>
+                                </div>
+                            </div>
+                            <div class="border-t mt-6 pt-4">
+                                <div class="flex justify-between items-center font-bold">
+                                    <span class="text-slate-800">Gesamtanpassung 2024</span>
+                                    <span class="text-green-700 text-lg">+600 T€</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                         <div class="lg:col-span-2 bg-white p-6 md:p-8 rounded-xl border shadow-sm">
                             <div class="flex flex-col md:flex-row justify-between items-center mb-4">
@@ -317,6 +371,17 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- START: Added Balance Sheet Chart -->
+                    <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm mt-8">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Analyse der Bilanzstruktur (in T€)</h3>
+                        <p class="text-sm text-slate-600 mb-6">Die Bilanz zeigt die finanzielle Stabilität des Unternehmens. Auf der Aktivseite ist das Wachstum des Umlaufvermögens (insb. liquide Mittel) sichtbar, während die Passivseite die Finanzierungsstruktur aus Eigen- und Fremdkapital darstellt. Das negative Eigenkapital in 2023/24 ist ein typisches Merkmal für Startups in der Wachstumsphase.</p>
+                        <div class="chart-container">
+                            <canvas id="balanceSheetChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- END: Added Balance Sheet Chart -->
+
                 </section>
 
                 <!-- Synergies View -->
@@ -499,6 +564,17 @@
                     },
                     ml_ag_revenue: [420000, 435000, 450000] // Assumed revenue for ML AG
                 },
+                balanceSheet: {
+                    years: ['2022', '2023', '2024'],
+                    assets: {
+                        fixed: [300, 400, 500],
+                        current: [1500, 3000, 4500]
+                    },
+                    liabilities: {
+                        equity: [500, -100, -1300],
+                        debt: [1300, 3500, 6300]
+                    }
+                },
                 breakdown2024: {
                     labels: ['DACH - Enterprise', 'DACH - Standard', 'EU - Standard'],
                     revenue: [4500, 2500, 1500],
@@ -592,7 +668,7 @@
             });
 
             // --- CHARTS & VISUALIZATIONS ---
-            let financialsChart, costStructureChart, synergyChart, customerStructureChart, revenueBreakdownChart;
+            let financialsChart, costStructureChart, synergyChart, customerStructureChart, revenueBreakdownChart, balanceSheetChart;
 
             function createFinancialsChart(ebitdaType = 'reported') {
                 const ctx = document.getElementById('financialsChart').getContext('2d');
@@ -710,6 +786,62 @@
                         },
                         plugins: { legend: { position: 'bottom' }, tooltip: { mode: 'index', intersect: false } }
                     }
+
+                });
+            }
+            
+            function createBalanceSheetChart() {
+                const ctx = document.getElementById('balanceSheetChart').getContext('2d');
+                if (balanceSheetChart) balanceSheetChart.destroy();
+                const data = caseData.balanceSheet;
+
+                balanceSheetChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.years,
+                        datasets: [
+                            {
+                                label: 'Anlagevermögen',
+                                data: data.assets.fixed,
+                                backgroundColor: '#0c4a6e',
+                                stack: 'Aktiva',
+                            },
+                            {
+                                label: 'Umlaufvermögen',
+                                data: data.assets.current,
+                                backgroundColor: '#38bdf8',
+                                stack: 'Aktiva',
+                            },
+                            {
+                                label: 'Eigenkapital',
+                                data: data.liabilities.equity,
+                                backgroundColor: '#16a34a',
+                                stack: 'Passiva',
+                            },
+                            {
+                                label: 'Fremdkapital',
+                                data: data.liabilities.debt,
+                                backgroundColor: '#f97316',
+                                stack: 'Passiva',
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: { mode: 'index' },
+                            legend: { position: 'bottom' }
+                        },
+                        scales: {
+                            x: { grid: { display: false } },
+                            y: {
+                                beginAtZero: false,
+                                stacked: true,
+                                title: { display: true, text: 'in T€' }
+                            }
+                        }
+                    }
                 });
             }
 
@@ -826,6 +958,7 @@
                 createCostStructureChart();
                 createCustomerStructureChart();
                 createRevenueBreakdownChart();
+                createBalanceSheetChart();
                 calculateAndDisplaySynergies();
             }
         });
