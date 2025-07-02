@@ -222,7 +222,7 @@
                             <h3 class="text-2xl font-bold text-center">Acquirer: Mittelstands-Logistik AG</h3>
                             <div class="text-center">
                                 <p class="text-xl font-semibold">450 Mio. €</p>
-                                <p class="text-sm text-slate-500">Umsatz</p>
+                                <p class="text-sm text-slate-500">Umsatz (2024)</p>
                             </div>
                             <div class="text-center">
                                 <p class="text-xl font-semibold">2.800</p>
@@ -275,82 +275,48 @@
                         <p class="max-w-3xl mx-auto text-slate-600">Dieser Bereich ermöglicht eine detaillierte Untersuchung der finanziellen Gesundheit des Targets. Analysiere die historische Entwicklung und die wichtigsten SaaS-Kennzahlen, um die Nachhaltigkeit des Geschäftsmodells zu bewerten.</p>
                     </div>
 
-                    <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm mb-8">
-                        <div class="flex flex-col md:flex-row justify-between items-center mb-4">
-                            <h3 class="text-2xl font-bold text-slate-800 mb-4 md:mb-0">Ergebnisentwicklung (in T€)</h3>
-                            <div class="flex items-center space-x-2 bg-slate-200 p-1 rounded-lg">
-                                <label for="ebitdaToggle" class="text-sm font-medium text-slate-700 px-2">EBITDA-Ansicht:</label>
-                                <div class="flex items-center space-x-1">
-                                    <button id="toggleReported" class="px-3 py-1 text-sm rounded-md bg-white shadow">Reported</button>
-                                    <button id="toggleAdjusted" class="px-3 py-1 text-sm rounded-md">Adjusted</button>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-sm text-slate-600 mb-6">Das Diagramm zeigt die Entwicklung von Umsatz, Rohertrag und EBITDA. Nutze den Schalter, um den Effekt der Management-Adjustments auf das EBITDA zu sehen. Dies ist entscheidend, um die tatsächliche operative Profitabilität zu verstehen.</p>
-                        <div class="chart-container max-w-4xl mx-auto">
-                            <canvas id="financialsChart"></canvas>
-                        </div>
-                    </div>
-
-                     <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm mb-8">
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Analyse der Kostenstruktur (in T€)</h3>
-                        <p class="text-sm text-slate-600 mb-6">Dieses gestapelte Balkendiagramm zeigt die Entwicklung der drei Hauptkostenblöcke. Es wird deutlich, wie stark die Vertriebs- und Marketingkosten im Verhältnis zu den anderen Bereichen gestiegen sind, um das Wachstum zu finanzieren.</p>
-                        <div class="chart-container max-w-4xl mx-auto">
-                            <canvas id="costStructureChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                         <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm">
-                            <h3 class="text-2xl font-bold text-slate-800 mb-4">SaaS-Kennzahlen (KPIs)</h3>
-                            <p class="text-sm text-slate-600 mb-6">Die folgenden KPIs sind entscheidend für die Bewertung eines SaaS-Unternehmens. Besondere Aufmerksamkeit gilt dem Verhältnis von Kunden-Lebenszeitwert (LTV) zu Akquisekosten (CAC) und der steigenden Abwanderungsrate (Churn).</p>
-                            <div class="space-y-6">
-                                <div class="kpi-item">
-                                    <div class="flex justify-between items-baseline mb-1">
-                                        <h4 class="font-semibold text-slate-700">LTV / CAC Ratio</h4>
-                                        <span class="font-bold text-2xl text-sky-800">2,6x</span>
-                                    </div>
-                                    <div class="kpi-bar-bg w-full h-3">
-                                        <div id="ltv-cac-bar" class="kpi-bar bg-sky-600" style="width: 52%;"></div>
-                                    </div>
-                                    <p class="text-xs text-slate-500 mt-1">Guter Wert: >3x. Aktueller Wert ist ein Warnsignal für ineffizientes Marketing.</p>
-                                </div>
-                                <div class="kpi-item">
-                                    <div class="flex justify-between items-baseline mb-1">
-                                        <h4 class="font-semibold text-slate-700">Monthly Churn Rate</h4>
-                                        <span class="font-bold text-2xl text-amber-600">1,8%</span>
-                                    </div>
-                                    <div class="kpi-bar-bg w-full h-3">
-                                        <div id="churn-bar" class="kpi-bar bg-amber-500" style="width: 72%;"></div>
-                                    </div>
-                                    <p class="text-xs text-slate-500 mt-1">Gestiegen von 1,2% im Vorjahr, vor allem bei Kleinkunden. Gesunder Wert: <1%.</p>
-                                </div>
+                             <h3 class="text-2xl font-bold text-slate-800 mb-4">Umsatz- & Margen-Analyse (2024)</h3>
+                             <p class="text-sm text-slate-600 mb-6">Diese Ansicht schlüsselt den Umsatz, den Rohertrag und die EBITDA-Marge nach Regionen und Produktclustern auf. Sie zeigt, dass das Enterprise-Geschäft im Kernmarkt DACH hochprofitabel ist, während die Expansion mit Standard-Paketen in Europa noch verlustbringend ist.</p>
+                            <div class="chart-container">
+                                <canvas id="revenueBreakdownChart"></canvas>
                             </div>
                         </div>
                         <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm">
-                            <h3 class="text-2xl font-bold text-slate-800 mb-4">Management Adjustments</h3>
-                            <p class="text-sm text-slate-600 mb-6">Um ein normalisiertes Ergebnis zu erhalten, wurden einmalige oder nicht-operative Posten aus dem Reported EBITDA herausgerechnet. Diese Anpassungen sind typisch für M&A-Prozesse.</p>
-                            <ul class="space-y-3 text-sm">
-                                <li class="flex justify-between items-center">
-                                    <span class="text-slate-700">1. Einmalige Messekosten</span>
-                                    <span class="font-semibold bg-green-100 text-green-800 py-1 px-3 rounded-full">+250 T€</span>
-                                </li>
-                                <li class="flex justify-between items-center">
-                                    <span class="text-slate-700">2. Überhöhtes Gründergehalt</span>
-                                    <span class="font-semibold bg-green-100 text-green-800 py-1 px-3 rounded-full">+150 T€</span>
-                                </li>
-                                <li class="flex justify-between items-center">
-                                    <span class="text-slate-700">3. Transaktions-Beratungskosten</span>
-                                    <span class="font-semibold bg-green-100 text-green-800 py-1 px-3 rounded-full">+200 T€</span>
-                                </li>
-                                <li class="flex justify-between items-center border-t pt-3 mt-3">
-                                    <span class="font-bold text-slate-800">Gesamtanpassung 2024</span>
-                                    <span class="font-bold text-lg text-green-800">+600 T€</span>
-                                </li>
-                            </ul>
+                            <h3 class="text-2xl font-bold text-slate-800 mb-4">Analyse der Kostenstruktur (in T€)</h3>
+                            <p class="text-sm text-slate-600 mb-6">Dieses gestapelte Balkendiagramm zeigt die Entwicklung der drei Hauptkostenblöcke. Es wird deutlich, wie stark die Vertriebs- und Marketingkosten im Verhältnis zu den anderen Bereichen gestiegen sind, um das Wachstum zu finanzieren.</p>
+                            <div class="chart-container">
+                                <canvas id="costStructureChart"></canvas>
+                            </div>
                         </div>
                     </div>
-
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                        <div class="lg:col-span-2 bg-white p-6 md:p-8 rounded-xl border shadow-sm">
+                            <div class="flex flex-col md:flex-row justify-between items-center mb-4">
+                                <h3 class="text-2xl font-bold text-slate-800 mb-4 md:mb-0">Gesamtergebnisentwicklung (in T€)</h3>
+                                <div class="flex items-center space-x-2 bg-slate-200 p-1 rounded-lg">
+                                    <label class="text-sm font-medium text-slate-700 px-2">EBITDA:</label>
+                                    <div class="flex items-center space-x-1">
+                                        <button id="toggleReported" class="px-3 py-1 text-sm rounded-md bg-white shadow">Reported</button>
+                                        <button id="toggleAdjusted" class="px-3 py-1 text-sm rounded-md">Adjusted</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-600 mb-6">Nutze den Schalter, um den Effekt der Management-Adjustments auf das EBITDA zu sehen. Dies ist entscheidend, um die tatsächliche operative Profitabilität zu verstehen.</p>
+                            <div class="chart-container max-w-4xl mx-auto">
+                                <canvas id="financialsChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 md:p-8 rounded-xl border shadow-sm">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-4">Kundenanalyse</h3>
+                            <p class="text-sm text-slate-600 mb-6">Die Kundenstruktur zeigt eine hohe Konzentration im "Long-Tail". Fahre mit der Maus über die Segmente, um die spezifische Abwanderungsrate (Churn) zu sehen, die das Hauptproblem bei Kleinkunden verdeutlicht.</p>
+                            <div class="chart-container" style="max-height: 300px;">
+                                <canvas id="customerStructureChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Synergies View -->
@@ -530,7 +496,19 @@
                         research: [1100, 2000, 3400],
                         sales: [950, 1950, 3800],
                         admin: [300, 550, 900]
-                    }
+                    },
+                    ml_ag_revenue: [420000, 435000, 450000] // Assumed revenue for ML AG
+                },
+                breakdown2024: {
+                    labels: ['DACH - Enterprise', 'DACH - Standard', 'EU - Standard'],
+                    revenue: [4500, 2500, 1500],
+                    grossProfit: [3900, 1900, 1100],
+                    ebitdaMargin: [15, 5, -10] // Positive, Break-Even, Negative
+                },
+                customers: {
+                    labels: ['Kleinkunden', 'Mittelstand', 'Großkunden'],
+                    counts: [110, 8, 2],
+                    churnRates: [3.5, 0.8, 0.2] // Specific churn rates per segment
                 },
                 synergyData: {
                     ml_ag_ebitda: 38000,
@@ -539,10 +517,6 @@
                     ml_ag_customers: 5000,
                     flg_arpa: 71, // 8.52M ARR / 120 customers / 12 months -> ~5.9k/month, let's use 71k ARPA
                     flg_gross_margin: 0.81
-                },
-                kpis: {
-                    ltv_cac_ratio: 2.6,
-                    churn_rate: 1.8,
                 },
                 risks: {
                     support: {
@@ -618,7 +592,7 @@
             });
 
             // --- CHARTS & VISUALIZATIONS ---
-            let financialsChart, costStructureChart, synergyChart;
+            let financialsChart, costStructureChart, synergyChart, customerStructureChart, revenueBreakdownChart;
 
             function createFinancialsChart(ebitdaType = 'reported') {
                 const ctx = document.getElementById('financialsChart').getContext('2d');
@@ -661,12 +635,88 @@
                 });
             }
 
+            function createCustomerStructureChart() {
+                const ctx = document.getElementById('customerStructureChart').getContext('2d');
+                if (customerStructureChart) customerStructureChart.destroy();
+                customerStructureChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: caseData.customers.labels,
+                        datasets: [{
+                            label: 'Anzahl Kunden',
+                            data: caseData.customers.counts,
+                            backgroundColor: ['#f43f5e', '#f59e0b', '#0ea5e9'],
+                            borderColor: '#fff',
+                            borderWidth: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) { label += ': '; }
+                                        if (context.parsed !== null) { label += context.parsed; }
+                                        const churnRate = caseData.customers.churnRates[context.dataIndex];
+                                        return [label, `Churn: ${churnRate}%`];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            function createRevenueBreakdownChart() {
+                const ctx = document.getElementById('revenueBreakdownChart').getContext('2d');
+                if (revenueBreakdownChart) revenueBreakdownChart.destroy();
+                const data = caseData.breakdown2024;
+                revenueBreakdownChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                label: 'Umsatz',
+                                data: data.revenue,
+                                backgroundColor: '#64748b',
+                                yAxisID: 'y',
+                            },
+                            {
+                                label: 'Rohertrag',
+                                data: data.grossProfit,
+                                backgroundColor: '#0ea5e9',
+                                yAxisID: 'y',
+                            },
+                            {
+                                label: 'EBITDA Marge',
+                                data: data.ebitdaMargin,
+                                backgroundColor: '#f59e0b',
+                                borderColor: '#f59e0b',
+                                type: 'line',
+                                yAxisID: 'y1',
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'in T€' } },
+                            y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Marge in %' }, ticks: { callback: (value) => value + '%' } }
+                        },
+                        plugins: { legend: { position: 'bottom' }, tooltip: { mode: 'index', intersect: false } }
+                    }
+                });
+            }
+
             function createSynergyChart(baseEbitda, costSynergy, revenueSynergy) {
                 const ctx = document.getElementById('synergyChart').getContext('2d');
                 if (synergyChart) synergyChart.destroy();
-                
                 const finalEbitda = baseEbitda + costSynergy + revenueSynergy;
-
                 synergyChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
@@ -678,11 +728,7 @@
                             { label: 'EBITDA nach Synergien', data: [finalEbitda], backgroundColor: '#0c4a6e' }
                         ]
                     },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        scales: { y: { title: { display: true, text: 'in T€' } } },
-                        plugins: { legend: { position: 'bottom' } }
-                    }
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'in T€' } } }, plugins: { legend: { position: 'bottom' } } }
                 });
             }
             
@@ -701,13 +747,6 @@
                 toggleReported.classList.remove('bg-white', 'shadow');
             });
             
-            function animateKpiBars() {
-                const ltvBar = document.getElementById('ltv-cac-bar');
-                const churnBar = document.getElementById('churn-bar');
-                if (ltvBar) ltvBar.style.width = (caseData.kpis.ltv_cac_ratio / 5) * 100 + '%';
-                if (churnBar) churnBar.style.width = (caseData.kpis.churn_rate / 2.5) * 100 + '%';
-            }
-
             const riskCards = document.querySelectorAll('.risk-card');
             const riskDetailsPane = document.getElementById('risk-details-pane');
 
@@ -785,8 +824,9 @@
             function initializeCharts() {
                 createFinancialsChart();
                 createCostStructureChart();
+                createCustomerStructureChart();
+                createRevenueBreakdownChart();
                 calculateAndDisplaySynergies();
-                animateKpiBars();
             }
         });
     </script>
